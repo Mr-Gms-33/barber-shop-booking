@@ -52,16 +52,20 @@ def _seed_if_empty() -> None:
         if db.scalar(select(func.count()).select_from(Service)) == 0:
             db.add_all(
                 [
-                    Service(name="Haircut", duration_minutes=30, price=25),
-                    Service(name="Beard trim", duration_minutes=15, price=15),
+                    Service(name="Herrenhaarschnitt", duration_minutes=30, price=32.00),
+                    Service(name="Bartpflege", duration_minutes=20, price=18.00),
+                    Service(name="Haarschnitt & Bart", duration_minutes=45, price=42.00),
+                    Service(name="Konturenschnitt", duration_minutes=15, price=22.00),
+                    Service(name="Kinderhaarschnitt (bis 12)", duration_minutes=25, price=24.00),
                 ]
             )
         if db.scalar(select(func.count()).select_from(Barber)) == 0:
-            b1 = Barber(name="Alex")
-            b2 = Barber(name="Sam")
-            db.add_all([b1, b2])
+            b1 = Barber(name="Marco Schneider")
+            b2 = Barber(name="Ahmet Yilmaz")
+            b3 = Barber(name="Jonas Weber")
+            db.add_all([b1, b2, b3])
             db.flush()
-            for barber_id in (b1.id, b2.id):
+            for barber_id in (b1.id, b2.id, b3.id):
                 for dow in range(0, 5):
                     db.add(
                         BarberSchedule(

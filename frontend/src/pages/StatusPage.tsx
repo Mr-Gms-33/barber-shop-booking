@@ -14,6 +14,7 @@ export default function StatusPage() {
   const [last4, setLast4] = useState("");
   const [booking, setBooking] = useState<Booking | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [rescheduleAt, setRescheduleAt] = useState("");
 
   async function lookup(e: React.FormEvent) {
     e.preventDefault();
@@ -71,6 +72,40 @@ export default function StatusPage() {
             <button type="button" onClick={cancel}>
               Cancel booking
             </button>
+          )}
+          {booking.status === "confirmed" && (
+            <div>
+              <label>
+                Reschedule
+                <input
+                  type="datetime-local"
+                  value={rescheduleAt}
+                  onChange={(e) => setRescheduleAt(e.target.value)}
+                />
+              </label>
+              <button
+                type="button"
+                onClick={async () => {
+                  if (!rescheduleAt) return;
+                  await api(`/api/bookings/${booking.booking_code}/reschedule`, {
+                    method: "POST",
+                    body: JSON.stringify({
+                      booking_code: code,
+                      phone_last4: last4,
+                      start_at: new Date(rescheduleAt).toISOString(),
+                      any_barber: false,
+                    }),
+                  });
+                  const b = await api<Booking>("/api/bookings/lookup", {
+                    method: "POST",
+                    body: JSON.stringify({ booking_code: code, phone_last4: last4 }),
+                  });
+                  setBooking(b);
+                }}
+              >
+                Submit reschedule
+              </button>
+            </div>
           )}
         </div>
       )}

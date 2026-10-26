@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
 import { api, authHeaders } from "../api";
+import { formatEuro } from "../format";
+import AdminCatalog from "./AdminCatalog";
+import AdminHistory from "./AdminHistory";
 
 type Booking = {
   id: number;
@@ -17,7 +20,13 @@ export default function AdminPage() {
   const [user, setUser] = useState("");
   const [pass, setPass] = useState("");
   const [pending, setPending] = useState<Booking[]>([]);
-  const [dashboard, setDashboard] = useState<{ total_revenue: number } | null>(null);
+  const [dashboard, setDashboard] = useState<{
+    total_revenue: number;
+    by_service: { name: string; revenue: number }[];
+    by_barber: { name: string; revenue: number }[];
+    by_day: { date: string; revenue: number }[];
+  } | null>(null);
+  const [barbers, setBarbers] = useState<{ id: number; name: string }[]>([]);
   const [barberPick, setBarberPick] = useState<Record<number, number>>({});
 
   async function login(e: React.FormEvent) {
@@ -36,6 +45,7 @@ export default function AdminPage() {
       headers: authHeaders(token),
     });
     setPending(list);
+    setBarbers(await api<{ id: number; name: string }[]>("/api/admin/barbers", { headers: authHeaders(token) }));
     const now = new Date();
     const from = new Date(now.getFullYear(), now.getMonth(), 1).toISOString();
     const to = now.toISOString();
@@ -68,11 +78,13 @@ export default function AdminPage() {
     refresh();
   }
 
-  async function checkout(id: number) {
+  async function checkout(id: number, defaultPrice: number) {
+    const input = window.prompt("Revenue (EUR)", String(defaultPrice));
+    if (!input) return;
     await api(`/api/admin/appointments/${id}/checkout`, {
       method: "POST",
       headers: authHeaders(token),
-      body: JSON.stringify({ revenue: 25 }),
+      body: JSON.stringify({ revenue: Number(input) }),
     });
     refresh();
   }
@@ -99,7 +111,18 @@ export default function AdminPage() {
   return (
     <div className="card">
       <h2>Admin</h2>
-      {dashboard && <p>Revenue this month (completed): ${dashboard.total_revenue.toFixed(2)}</p>}
+      {dashboard && (
+        <div>
+          <p>Umsatz diesen Monat (abgeschlossen): {formatEuro(dashboard.total_revenue)}</p>
+          <details>
+            <summary>Breakdowns</summary>
+            <p>By service: {dashboard.by_service.map((x) => `${x.name} ${formatEuro(x.revenue)}`).join(", ") || "—"}</p>
+            <p>By barber: {dashboard.by_barber.map((x) => `${x.name} ${formatEuro(x.revenue)}`).join(", ") || "—"}</p>
+            <p>By day: {dashboard.by_day.map((x) => `${x.date} ${formatEuro(x.revenue)}`).join(", ") || "—"}</p>
+          </details>
+        </div>
+      )}
+      <AdminCatalog token={token} />
       <h3>Pending</h3>
       {pending.length === 0 && <p>No pending bookings.</p>}
       <ul>
@@ -108,11 +131,20 @@ export default function AdminPage() {
             {p.guest_name} — {p.service_name} — {new Date(p.start_at).toLocaleString()} ({p.booking_code})
             {p.any_barber && (
               <label>
-                Assign barber id
-                <input
-                  type="number"
+                Assign barber
+                <select
                   onChange={(e) => setBarberPick({ ...barberPick, [p.id]: Number(e.target.value) })}
-                />
+                  defaultValue=""
+                >
+                  <option value="" disabled>
+                    Choose…
+                  </option>
+                  {barbers.map((b) => (
+                    <option key={b.id} value={b.id}>
+                      {b.name}
+                    </option>
+                  ))}
+                </select>
               </label>
             )}
             <button type="button" onClick={() => accept(p.id, p.any_barber)}>
@@ -126,11 +158,18 @@ export default function AdminPage() {
       </ul>
       <h3>Confirmed (quick checkout)</h3>
       <ConfirmedList token={token} onCheckout={checkout} />
+      <AdminHistory token={token} />
     </div>
   );
 }
 
-function ConfirmedList({ token, onCheckout }: { token: string; onCheckout: (id: number) => void }) {
+function ConfirmedList({
+  token,
+  onCheckout,
+}: {
+  token: string;
+  onCheckout: (id: number, defaultPrice: number) => void;
+}) {
   const [rows, setRows] = useState<Booking[]>([]);
   useEffect(() => {
     api<Booking[]>("/api/admin/appointments?status=confirmed", { headers: authHeaders(token) }).then(setRows);
@@ -140,7 +179,7 @@ function ConfirmedList({ token, onCheckout }: { token: string; onCheckout: (id: 
       {rows.map((r) => (
         <li key={r.id}>
           {r.guest_name} — {new Date(r.start_at).toLocaleString()}
-          <button type="button" onClick={() => onCheckout(r.id)}>
+          <button type="button" onClick={() => onCheckout(r.id, 32)}>
             Checkout
           </button>
         </li>

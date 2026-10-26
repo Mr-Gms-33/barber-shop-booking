@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { api } from "../api";
+import { formatEuro } from "../format";
 
 type Service = { id: number; name: string; duration_minutes: number; price: number };
 type Barber = { id: number; name: string };
@@ -68,7 +69,7 @@ export default function BookPage() {
             <option value="">Select…</option>
             {services.map((s) => (
               <option key={s.id} value={s.id}>
-                {s.name} ({s.duration_minutes} min — ${s.price})
+                {s.name} ({s.duration_minutes} Min. — {formatEuro(Number(s.price))})
               </option>
             ))}
           </select>

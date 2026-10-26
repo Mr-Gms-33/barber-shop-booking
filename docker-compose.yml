@@ -58,6 +58,14 @@ services:
     depends_on:
       - backend
 
+  responder:
+    build:
+      context: ./responder
+    ports:
+      - "9000:9000"
+    environment:
+      AUTO_REMEDIATE: "false"
+
   grafana:
     image: grafana/grafana:10.3.3
     environment:
