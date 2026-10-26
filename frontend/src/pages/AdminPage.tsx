@@ -17,8 +17,9 @@ type Booking = {
 
 export default function AdminPage() {
   const [token, setToken] = useState(localStorage.getItem("adminToken") || "");
-  const [user, setUser] = useState("");
+  const [user, setUser] = useState("admin");
   const [pass, setPass] = useState("");
+  const [loginError, setLoginError] = useState<string | null>(null);
   const [pending, setPending] = useState<Booking[]>([]);
   const [dashboard, setDashboard] = useState<{
     total_revenue: number;
@@ -31,12 +32,26 @@ export default function AdminPage() {
 
   async function login(e: React.FormEvent) {
     e.preventDefault();
-    const res = await api<{ access_token: string }>("/api/admin/login", {
-      method: "POST",
-      body: JSON.stringify({ username: user, password: pass }),
-    });
-    localStorage.setItem("adminToken", res.access_token);
-    setToken(res.access_token);
+    setLoginError(null);
+    try {
+      const res = await api<{ access_token: string }>("/api/admin/login", {
+        method: "POST",
+        body: JSON.stringify({ username: user, password: pass }),
+      });
+      localStorage.setItem("adminToken", res.access_token);
+      setToken(res.access_token);
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : "Login failed";
+      if (msg.includes("503") || msg.toLowerCase().includes("fetch")) {
+        setLoginError(
+          "API is not reachable (503). Wait ~1 min for Render free tier to wake up, then try again."
+        );
+      } else if (msg.includes("401") || msg.includes("Invalid")) {
+        setLoginError("Wrong username or password. On Render use admin / changeme unless you changed ADMIN_PASSWORD.");
+      } else {
+        setLoginError(msg.slice(0, 200));
+      }
+    }
   }
 
   async function refresh() {
@@ -109,6 +124,11 @@ export default function AdminPage() {
           </label>
           <button type="submit">Sign in</button>
         </form>
+        {loginError && <p className="error">{loginError}</p>}
+        <p style={{ fontSize: "0.9rem" }}>
+          Production default: <strong>admin</strong> / <strong>changeme</strong> (set{" "}
+          <code>ADMIN_PASSWORD</code> in Render if you changed it).
+        </p>
       </div>
     );
   }

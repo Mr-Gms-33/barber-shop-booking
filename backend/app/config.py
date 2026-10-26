@@ -8,6 +8,8 @@ def normalize_database_url(url: str) -> str:
         url = "postgresql+psycopg://" + url[len("postgres://") :]
     elif url.startswith("postgresql://") and "+psycopg" not in url:
         url = "postgresql+psycopg://" + url[len("postgresql://") :]
+    if ("render.com" in url or "onrender.com" in url) and "sslmode=" not in url:
+        url += "&sslmode=require" if "?" in url else "?sslmode=require"
     return url
 
 

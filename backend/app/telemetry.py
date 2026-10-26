@@ -1,5 +1,6 @@
 import json
 import logging
+import os
 import sys
 from typing import Any
 
@@ -63,7 +64,7 @@ def setup_otel_app(app: Any) -> None:
             endpoint=settings.otel_exporter_otlp_endpoint, insecure=True
         )
         provider.add_span_processor(BatchSpanProcessor(exporter))
-    else:
+    elif not os.getenv("RENDER"):
         provider.add_span_processor(BatchSpanProcessor(ConsoleSpanExporter()))
     trace.set_tracer_provider(provider)
     FastAPIInstrumentor.instrument_app(app)
