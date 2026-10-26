@@ -18,6 +18,8 @@ How we work: [docs/process.md](docs/process.md). **Loop engineering:** [docs/loo
 
 **Tracker:** https://github.com/Mr-Gms-33/barber-shop-booking/issues — Product creates/grooms; Full-stack implements (no test sign-off); QA comments `QA: PASS` / `QA: FAIL` only; Product closes on PASS or returns bugs to Full-stack.
 
+**Submission checklist:** [docs/SUBMISSION.md](docs/SUBMISSION.md)
+
 ## Modular docs
 
 - [docs/PROJECT_HANDOFF.md](docs/PROJECT_HANDOFF.md) — product, journeys, acceptance criteria  

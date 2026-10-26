@@ -2,6 +2,8 @@
 
 Small single-shop barber booking: customers reserve services online; staff approve, assign barbers, check out visits, and view sales.
 
+**Course submission:** [docs/SUBMISSION.md](docs/SUBMISSION.md) · **Repo:** https://github.com/Mr-Gms-33/barber-shop-booking
+
 ## Problem
 
 Phone bookings waste time and cause double-booking. Customers need to pick a **service**, **time**, and optional **barber** without calling. Staff need one place to **approve** requests, **assign** barbers when needed, **check out** after the visit, and see **history** and **revenue**.
@@ -20,9 +22,7 @@ Full product spec: [docs/PROJECT_HANDOFF.md](docs/PROJECT_HANDOFF.md).
 
 ## Task tracker
 
-Create GitHub Issues from [docs/PROJECT_HANDOFF.md §8](docs/PROJECT_HANDOFF.md) (acceptance criteria).
-
-**Task tracker:** https://github.com/Mr-Gms-33/barber-shop-booking/issues (26 groomed issues from §8; workflow in [docs/loop-engineering.md](docs/loop-engineering.md))
+**Issues (§8 acceptance criteria):** https://github.com/Mr-Gms-33/barber-shop-booking/issues — 26 tasks with QA/Product loop ([docs/loop-engineering.md](docs/loop-engineering.md)).
 
 ## Agent team
 
@@ -34,12 +34,15 @@ See [AGENTS.md](AGENTS.md) and [docs/process.md](docs/process.md).
 - **Frontend:** React (Vite, TypeScript)  
 - **Deploy:** Render — [docs/deploy.md](docs/deploy.md) + [render.yaml](render.yaml)
 
-### Live demo (after Blueprint deploy)
+### Live demo (Render)
 
 | | URL |
 |---|-----|
-| App | https://barber-booking-web.onrender.com |
-| API | https://barber-booking-api.onrender.com/docs |
+| **App** | https://barber-booking-web.onrender.com |
+| **API docs** | https://barber-booking-api.onrender.com/docs |
+| **Health** | https://barber-booking-api.onrender.com/health |
+
+**Production admin:** `admin` / `changeme` — wake API via **Health** link first on free tier (~1 min).
 
 ## Run locally
 
