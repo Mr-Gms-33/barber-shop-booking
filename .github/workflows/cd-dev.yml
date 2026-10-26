@@ -1,0 +1,13 @@
+name: CD Dev
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy-dev:
+    runs-on: ubuntu-latest
+    if: ${{ secrets.RENDER_DEPLOY_HOOK_DEV != '' }}
+    steps:
+      - name: Trigger Render dev deploy
+        run: curl -fsS -X POST "${{ secrets.RENDER_DEPLOY_HOOK_DEV }}"

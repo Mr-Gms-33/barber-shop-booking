@@ -1,0 +1,16 @@
+groups:
+  - name: barber_booking_user_impact
+    rules:
+      - alert: HighBookingFailureRate
+        expr: |
+          (
+            sum(rate(bookings_submitted_total{result="failed"}[5m]))
+            /
+            clamp_min(sum(rate(bookings_submitted_total[5m])), 0.01)
+          ) > 0.5
+        for: 2m
+        labels:
+          severity: page
+        annotations:
+          summary: "Customers cannot complete bookings"
+          description: "More than 50% of booking attempts failed over the last 5 minutes."

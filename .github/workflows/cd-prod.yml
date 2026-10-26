@@ -1,0 +1,20 @@
+name: CD Production
+
+on:
+  workflow_dispatch:
+    inputs:
+      git_ref:
+        description: Git ref to deploy (rollback = previous SHA)
+        required: true
+        default: main
+
+jobs:
+  deploy-prod:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.git_ref }}
+      - name: Trigger Render production deploy
+        if: ${{ secrets.RENDER_DEPLOY_HOOK_PROD != '' }}
+        run: curl -fsS -X POST "${{ secrets.RENDER_DEPLOY_HOOK_PROD }}"
