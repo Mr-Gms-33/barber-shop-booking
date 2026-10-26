@@ -15,6 +15,21 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.event.inputs.git_ref }}
-      - name: Trigger Render production deploy
-        if: ${{ secrets.RENDER_DEPLOY_HOOK_PROD != '' }}
-        run: curl -fsS -X POST "${{ secrets.RENDER_DEPLOY_HOOK_PROD }}"
+      - name: Deploy API (production hook)
+        env:
+          HOOK_PROD: ${{ secrets.RENDER_DEPLOY_HOOK_API_PROD }}
+          HOOK_DEV: ${{ secrets.RENDER_DEPLOY_HOOK_API }}
+        run: |
+          HOOK="$HOOK_PROD"
+          if [ -z "$HOOK" ]; then HOOK="$HOOK_DEV"; fi
+          if [ -z "$HOOK" ]; then echo "No Render deploy hook configured"; exit 1; fi
+          curl -fsS -X POST "$HOOK"
+      - name: Deploy web (production hook)
+        env:
+          HOOK_PROD: ${{ secrets.RENDER_DEPLOY_HOOK_WEB_PROD }}
+          HOOK_DEV: ${{ secrets.RENDER_DEPLOY_HOOK_WEB }}
+        run: |
+          HOOK="$HOOK_PROD"
+          if [ -z "$HOOK" ]; then HOOK="$HOOK_DEV"; fi
+          if [ -z "$HOOK" ]; then echo "No Render deploy hook configured"; exit 1; fi
+          curl -fsS -X POST "$HOOK"

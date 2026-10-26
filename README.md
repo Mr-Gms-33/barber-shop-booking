@@ -32,7 +32,14 @@ See [AGENTS.md](AGENTS.md) and [docs/process.md](docs/process.md).
 
 - **Backend:** Python 3.12, FastAPI, SQLAlchemy, PostgreSQL  
 - **Frontend:** React (Vite, TypeScript)  
-- **Deploy:** Render (see [docs/deploy.md](docs/deploy.md))
+- **Deploy:** Render — [docs/deploy.md](docs/deploy.md) + [render.yaml](render.yaml)
+
+### Live demo (after Blueprint deploy)
+
+| | URL |
+|---|-----|
+| App | https://barber-booking-web.onrender.com |
+| API | https://barber-booking-api.onrender.com/docs |
 
 ## Run locally
 

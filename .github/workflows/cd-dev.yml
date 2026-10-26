@@ -7,7 +7,22 @@ on:
 jobs:
   deploy-dev:
     runs-on: ubuntu-latest
-    if: ${{ secrets.RENDER_DEPLOY_HOOK_DEV != '' }}
     steps:
-      - name: Trigger Render dev deploy
-        run: curl -fsS -X POST "${{ secrets.RENDER_DEPLOY_HOOK_DEV }}"
+      - name: Deploy API to Render (dev)
+        env:
+          HOOK: ${{ secrets.RENDER_DEPLOY_HOOK_API }}
+        run: |
+          if [ -z "$HOOK" ]; then
+            echo "Skip: set GitHub secret RENDER_DEPLOY_HOOK_API (Render service Deploy Hook)"
+            exit 0
+          fi
+          curl -fsS -X POST "$HOOK"
+      - name: Deploy web to Render (dev)
+        env:
+          HOOK: ${{ secrets.RENDER_DEPLOY_HOOK_WEB }}
+        run: |
+          if [ -z "$HOOK" ]; then
+            echo "Skip: set GitHub secret RENDER_DEPLOY_HOOK_WEB"
+            exit 0
+          fi
+          curl -fsS -X POST "$HOOK"

@@ -17,7 +17,19 @@ from app.telemetry import setup_logging, setup_otel_engine, setup_otel_app
 
 setup_otel_app(app)
 
-origins = [o.strip() for o in settings.cors_origins.split(",") if o.strip()]
+def _cors_origins(raw: str) -> list[str]:
+    out: list[str] = []
+    for part in raw.split(","):
+        o = part.strip()
+        if not o:
+            continue
+        if not o.startswith("http"):
+            o = f"https://{o}"
+        out.append(o)
+    return out
+
+
+origins = _cors_origins(settings.cors_origins)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins or ["*"],

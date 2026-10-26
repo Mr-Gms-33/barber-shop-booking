@@ -1,4 +1,5 @@
-const API = import.meta.env.VITE_API_URL || "http://localhost:8000";
+const raw = import.meta.env.VITE_API_URL || "http://localhost:8000";
+const API = raw.startsWith("http") ? raw : `https://${raw}`;
 
 export async function api<T>(path: string, init?: RequestInit): Promise<T> {
   const res = await fetch(`${API}${path}`, {
