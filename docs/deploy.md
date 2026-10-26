@@ -13,7 +13,8 @@ Update `README.md` with these once live. Free tier may take ~1 min to wake on fi
 ## One-time setup (you do this in the browser)
 
 1. Sign in at [render.com](https://render.com) and connect GitHub account **Mr-Gms-33**.
-2. **New → Blueprint** → select repo **barber-shop-booking** → apply [render.yaml](../render.yaml).
+2. **New → Blueprint** → select repo **barber-shop-booking** → apply [render.yaml](../render.yaml).  
+   If validation fails on `plan` for the static site, pull latest `main` (static UI must not set `plan: free`).
 3. When prompted, set **`ADMIN_PASSWORD`** (e.g. `changeme` for demo, or a strong password).
 4. Wait until **barber-booking-api** and **barber-booking-web** are **Live** (database migrates on first API start).
 5. Open the UI URL, book a test appointment; admin login: **`admin`** + your `ADMIN_PASSWORD`.

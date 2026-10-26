@@ -34,14 +34,13 @@ services:
       - key: OTEL_EXPORTER_OTLP_ENDPOINT
         value: ""
 
+  # Static sites: no `plan` field (not a compute web service). Still free on Render.
   - type: web
     name: barber-booking-web
     runtime: static
-    plan: free
     rootDir: frontend
     buildCommand: npm install && npm run build
     staticPublishPath: dist
-    pullRequestPreviewsEnabled: true
     routes:
       - type: rewrite
         source: /*
