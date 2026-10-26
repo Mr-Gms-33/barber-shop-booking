@@ -31,15 +31,13 @@ services:
         value: "2"
       - key: CORS_ORIGINS
         value: https://barber-booking-web.onrender.com,http://localhost:5173,http://127.0.0.1:5173
-      - key: OTEL_EXPORTER_OTLP_ENDPOINT
-        value: ""
 
   # Static sites: no `plan` field (not a compute web service). Still free on Render.
   - type: web
     name: barber-booking-web
     runtime: static
     rootDir: frontend
-    buildCommand: npm install && npm run build
+    buildCommand: npm ci && npm run build
     staticPublishPath: dist
     routes:
       - type: rewrite

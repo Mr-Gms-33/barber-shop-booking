@@ -1,0 +1,1 @@
+{"root":["./src/app.test.tsx","./src/app.tsx","./src/api.ts","./src/format.ts","./src/main.tsx","./src/vite-env.d.ts","./src/pages/admincatalog.tsx","./src/pages/adminhistory.tsx","./src/pages/adminpage.tsx","./src/pages/bookpage.tsx","./src/pages/statuspage.tsx","./src/test/setup.ts"],"errors":true,"version":"5.6.3"}

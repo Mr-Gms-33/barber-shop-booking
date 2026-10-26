@@ -49,7 +49,12 @@ export default function AdminPage() {
     const now = new Date();
     const from = new Date(now.getFullYear(), now.getMonth(), 1).toISOString();
     const to = now.toISOString();
-    const dash = await api<{ total_revenue: number }>(
+    const dash = await api<{
+      total_revenue: number;
+      by_service: { name: string; revenue: number }[];
+      by_barber: { name: string; revenue: number }[];
+      by_day: { date: string; revenue: number }[];
+    }>(
       `/api/admin/dashboard?from_date=${encodeURIComponent(from)}&to_date=${encodeURIComponent(to)}`,
       { headers: authHeaders(token) }
     );

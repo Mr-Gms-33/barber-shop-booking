@@ -46,7 +46,6 @@ app.include_router(admin.router)
 def on_startup() -> None:
     setup_logging()
     setup_otel_engine(db.engine)
-    Base.metadata.create_all(bind=db.engine)
     _seed_if_empty()
     logger.info("API started")
 

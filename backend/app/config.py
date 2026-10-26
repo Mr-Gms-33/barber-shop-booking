@@ -29,6 +29,8 @@ class Settings(BaseSettings):
     @model_validator(mode="after")
     def _normalize_db(self) -> "Settings":
         self.database_url = normalize_database_url(self.database_url)
+        if self.otel_exporter_otlp_endpoint == "":
+            self.otel_exporter_otlp_endpoint = None
         return self
 
 
