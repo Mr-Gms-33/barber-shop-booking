@@ -20,9 +20,9 @@ Full product spec: [docs/PROJECT_HANDOFF.md](docs/PROJECT_HANDOFF.md).
 
 ## Task tracker
 
-Create GitHub Issues from [docs/PROJECT_HANDOFF.md §8](docs/PROJECT_HANDOFF.md) (acceptance criteria). Link your repo Issues page here after push:
+Create GitHub Issues from [docs/PROJECT_HANDOFF.md §8](docs/PROJECT_HANDOFF.md) (acceptance criteria).
 
-`https://github.com/<owner>/<repo>/issues`
+**Task tracker:** https://github.com/Mr-Gms-33/barber-shop-booking/issues
 
 ## Agent team
 
@@ -34,15 +34,25 @@ See [AGENTS.md](AGENTS.md) and [docs/process.md](docs/process.md).
 - **Frontend:** React (Vite, TypeScript)  
 - **Deploy:** Render (see [docs/deploy.md](docs/deploy.md))
 
-## Run locally (one command)
+## Run locally
+
+**With Docker** (full stack: Postgres, observability):
 
 ```bash
 docker compose up --build
 ```
 
+**Without Docker** (Windows — API + UI only):
+
+```powershell
+.\scripts\run-local.ps1
+```
+
 - Customer UI: http://localhost:5173  
 - API docs: http://localhost:8000/docs  
 - Default admin (dev only): `admin` / `changeme` — set `ADMIN_PASSWORD` in production.
+
+If `/docs` shows **connection refused**, nothing is listening on port 8000 — start the backend (script above or `uvicorn` in `backend/`).
 
 Run tests:
 
