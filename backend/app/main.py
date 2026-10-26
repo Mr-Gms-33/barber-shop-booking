@@ -5,7 +5,6 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.config import settings
 from app import db
-from app.db import Base
 from app.routers import admin, public
 from app.telemetry import metrics_response
 

@@ -17,6 +17,8 @@ Update `README.md` with these once live. Free tier may take ~1 min to wake on fi
    If validation fails on `plan` for the static site, pull latest `main` (static UI must not set `plan: free`).
 3. When prompted, set **`ADMIN_PASSWORD`** (e.g. `changeme` for demo, or a strong password).
 4. Wait until **barber-booking-api** and **barber-booking-web** are **Live** (database migrates on first API start).
+
+If a sync **failed** partway: open **Project_01 → Syncs → Manual sync** (or Blueprint → Sync) after pulling latest `main`. Ensure **`ADMIN_PASSWORD`** is set under **barber-booking-api → Environment**. Delete broken duplicate services only if Render shows stuck failed creates.
 5. Open the UI URL, book a test appointment; admin login: **`admin`** + your `ADMIN_PASSWORD`.
 
 ## GitHub Actions CD (optional, for rubric)
