@@ -14,7 +14,9 @@ Single-barber-shop online booking (guest customers, admin staff). Spec: [docs/PR
 | Platform | Docker Compose, Render deploy, CI/CD |
 | SRE / observability | Booking journey telemetry, user-impact alerts, responder agent |
 
-How we work: [docs/process.md](docs/process.md). Role details: [docs/team.md](docs/team.md).
+How we work: [docs/process.md](docs/process.md). **Loop engineering:** [docs/loop-engineering.md](docs/loop-engineering.md). Role details: [docs/team.md](docs/team.md).
+
+**Tracker:** https://github.com/Mr-Gms-33/barber-shop-booking/issues — Product creates/grooms; Full-stack implements (no test sign-off); QA comments `QA: PASS` / `QA: FAIL` only; Product closes on PASS or returns bugs to Full-stack.
 
 ## Modular docs
 

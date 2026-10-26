@@ -22,7 +22,7 @@ Full product spec: [docs/PROJECT_HANDOFF.md](docs/PROJECT_HANDOFF.md).
 
 Create GitHub Issues from [docs/PROJECT_HANDOFF.md §8](docs/PROJECT_HANDOFF.md) (acceptance criteria).
 
-**Task tracker:** https://github.com/Mr-Gms-33/barber-shop-booking/issues
+**Task tracker:** https://github.com/Mr-Gms-33/barber-shop-booking/issues (26 groomed issues from §8; workflow in [docs/loop-engineering.md](docs/loop-engineering.md))
 
 ## Agent team
 
@@ -50,7 +50,8 @@ docker compose up --build
 
 - Customer UI: http://localhost:5173  
 - API docs: http://localhost:8000/docs  
-- Default admin (dev only): `admin` / `changeme` — set `ADMIN_PASSWORD` in production.
+- **Admin login (local dev):** username `admin`, password `changeme` — change via `ADMIN_PASSWORD` in production.
+- **Demo catalog (Germany, EUR):** barbers Marco Schneider, Ahmet Yilmaz, Jonas Weber; services such as Herrenhaarschnitt (32 €), Bartpflege (18 €). Seeded on first API start when the database is empty. If you already ran the API once, delete `backend/local.db` (or reset Postgres) and restart to reload seed data.
 
 If `/docs` shows **connection refused**, nothing is listening on port 8000 — start the backend (script above or `uvicorn` in `backend/`).
 

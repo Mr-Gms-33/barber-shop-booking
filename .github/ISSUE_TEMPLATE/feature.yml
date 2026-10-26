@@ -1,0 +1,30 @@
+name: Feature (Product / spec)
+description: Testable acceptance criterion from PROJECT_HANDOFF §8
+title: "[Feature] "
+labels: ["agent:product", "status:backlog"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **Workflow:** Full-stack implements → QA `QA: PASS`/`QA: FAIL` → Product closes on PASS only.
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criterion
+      description: One testable outcome
+    validations:
+      required: true
+  - type: textarea
+    id: verify
+    attributes:
+      label: How to verify
+      description: Steps QA should run
+    validations:
+      required: true
+  - type: input
+    id: spec
+    attributes:
+      label: Spec reference
+      placeholder: docs/PROJECT_HANDOFF.md §8.x
+    validations:
+      required: true
