@@ -1,89 +1,117 @@
-# Barber Shop Online Booking
+<div align="center">
 
-Small single-shop barber booking: customers reserve services online; staff approve, assign barbers, check out visits, and view sales.
+# Barber Shop Booking
 
-**Course submission:** [docs/SUBMISSION.md](docs/SUBMISSION.md) · **Repo:** https://github.com/Mr-Gms-33/barber-shop-booking
+**Full-stack online booking product**
 
-## Problem
+Booking flows for a single barber shop — clean API, modern frontend, and production-minded packaging.
 
-Phone bookings waste time and cause double-booking. Customers need to pick a **service**, **time**, and optional **barber** without calling. Staff need one place to **approve** requests, **assign** barbers when needed, **check out** after the visit, and see **history** and **revenue**.
+[![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
+[![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://react.dev/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
+[![Portfolio](https://img.shields.io/badge/Portfolio-mounir--gmamsi-1b3550?style=for-the-badge&logo=netlify&logoColor=white)](https://mounir-gmamsi.netlify.app/)
 
-## Behavior (v1)
+</div>
 
-- Guest booking (name + phone; email optional). No online payment — pay at shop.
-- New bookings are **`pending`** until admin accepts or rejects.
-- Customer status page via **booking code** (no email/SMS in v1).
-- Cancel/reschedule allowed only **more than 2 hours** before start; reschedule returns to **`pending`**.
-- **`pending`** and **`confirmed`** appointments block barber slots.
-- One service per appointment. Invalid slot/barber shows **suggestions** (alternate times/barbers).
-- Admin: catalog, barbers, weekly hours, pending queue, checkout (adjustable revenue), history, sales dashboard.
+---
 
-Full product spec: [docs/PROJECT_HANDOFF.md](docs/PROJECT_HANDOFF.md).
+## Overview
 
-## Task tracker
+Barber Shop Booking is a full-stack application for online appointments. It separates backend API concerns from the React UI and includes Docker-based local delivery, authentication-related backend components, and observability hooks.
 
-**Issues (§8 acceptance criteria):** https://github.com/Mr-Gms-33/barber-shop-booking/issues — 26 tasks with QA/Product loop ([docs/loop-engineering.md](docs/loop-engineering.md)).
+---
 
-## Agent team
+## What the product delivers
 
-See [AGENTS.md](AGENTS.md) and [docs/process.md](docs/process.md).
+| Capability | Description |
+|------------|-------------|
+| Booking flows | Create and manage appointments for a single shop |
+| API layer | Structured REST API with validated models |
+| Frontend UX | React SPA for customer / shop interaction |
+| Persistence | Relational storage with migrations |
+| Local ops | Docker Compose for end-to-end startup |
+| Quality | Tests and observability instrumentation |
 
-## Stack
+---
 
-- **Backend:** Python 3.12, FastAPI, SQLAlchemy, PostgreSQL  
-- **Frontend:** React (Vite, TypeScript)  
-- **Deploy:** Render — [docs/deploy.md](docs/deploy.md) + [render.yaml](render.yaml)
+## Technology stack
 
-### Live demo (Render)
+### Backend
 
-| | URL |
-|---|-----|
-| **App** | https://barber-booking-web.onrender.com |
-| **API docs** | https://barber-booking-api.onrender.com/docs |
-| **Health** | https://barber-booking-api.onrender.com/health |
+![Python](https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white)
+![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=flat-square&logo=fastapi&logoColor=white)
+![SQLAlchemy](https://img.shields.io/badge/SQLAlchemy-D71F00?style=flat-square&logo=sqlalchemy&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=flat-square&logo=postgresql&logoColor=white)
+![Pydantic](https://img.shields.io/badge/Pydantic-E92063?style=flat-square)
+![Alembic](https://img.shields.io/badge/Alembic-7A7A7A?style=flat-square)
 
-**Production admin:** `admin` / `changeme` — wake API via **Health** link first on free tier (~1 min).
+### Frontend
+
+![React](https://img.shields.io/badge/React-20232A?style=flat-square&logo=react&logoColor=61DAFB)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white)
+![Vite](https://img.shields.io/badge/Vite-646CFF?style=flat-square&logo=vite&logoColor=white)
+![Vitest](https://img.shields.io/badge/Vitest-6E9F18?style=flat-square&logo=vitest&logoColor=white)
+
+### Platform
+
+![Docker](https://img.shields.io/badge/Docker-2496ED?style=flat-square&logo=docker&logoColor=white)
+![Nginx](https://img.shields.io/badge/Nginx-009639?style=flat-square&logo=nginx&logoColor=white)
+![OpenTelemetry](https://img.shields.io/badge/OpenTelemetry-000000?style=flat-square&logo=opentelemetry&logoColor=white)
+![Git](https://img.shields.io/badge/Git-F05032?style=flat-square&logo=git&logoColor=white)
+
+| Layer | Technologies |
+|-------|----------------|
+| API | FastAPI, Uvicorn, Pydantic, SQLAlchemy, Alembic, PostgreSQL |
+| UI | React, TypeScript, Vite |
+| Security | python-jose, passlib / bcrypt |
+| Ops | Docker Compose, Nginx, OpenTelemetry, Prometheus client |
+
+---
+
+## Solution flow
+
+| Step | Stage | Technologies |
+|:----:|-------|--------------|
+| 1 | User opens booking UI | React, Vite |
+| 2 | API validates request | FastAPI, Pydantic |
+| 3 | Persist booking data | SQLAlchemy, PostgreSQL |
+| 4 | Return confirmation to UI | REST JSON |
+| 5 | Observe system health | OpenTelemetry / metrics |
+
+```mermaid
+flowchart TD
+  A[1. Booking UI] --> B[2. FastAPI request]
+  B --> C[3. Database write or read]
+  C --> D[4. Response to UI]
+  B --> E[5. Telemetry]
+```
+
+---
+
+## Repository structure
+
+| Path | Purpose |
+|------|---------|
+| `backend/` | FastAPI application, migrations, tests |
+| `frontend/` | React + Vite client |
+| `docker-compose.yml` | Local multi-service stack |
+| `docs/` | Project documentation |
+| `observability/` | Observability configuration |
+
+---
 
 ## Run locally
 
-**With Docker** (full stack: Postgres, observability):
-
 ```bash
+copy .env.example .env
 docker compose up --build
 ```
 
-**Without Docker** (Windows — API + UI only):
+See `Makefile` and `docs/` for additional development commands.
 
-```powershell
-.\scripts\run-local.ps1
-```
+---
 
-- Customer UI: http://localhost:5173  
-- API docs: http://localhost:8000/docs  
-- **Admin login (local dev):** username `admin`, password `changeme` — change via `ADMIN_PASSWORD` in production.
-- **Demo catalog (Germany, EUR):** barbers Marco Schneider, Ahmet Yilmaz, Jonas Weber; services such as Herrenhaarschnitt (32 €), Bartpflege (18 €). Seeded on first API start when the database is empty. If you already ran the API once, delete `backend/local.db` (or reset Postgres) and restart to reload seed data.
+## Author
 
-If `/docs` shows **connection refused**, nothing is listening on port 8000 — start the backend (script above or `uvicorn` in `backend/`).
-
-Run tests:
-
-```bash
-docker compose run --rm backend pytest
-docker compose run --rm frontend npm test -- --run
-```
-
-Or from host (requires local Postgres matching `.env.example`):
-
-```bash
-make test
-```
-
-## Observability & alerts
-
-Booking journey is instrumented with OpenTelemetry (traces, metrics, structured logs sharing trace ID). Grafana/Prometheus in Compose — see [docs/observability.md](docs/observability.md).
-
-User-impact alert: elevated **booking submission failures** (not CPU). Responder: [responder/README.md](responder/README.md).
-
-## License
-
-Course project — Mounir.
+**Mounir Gmamsi**  
+[Portfolio](https://mounir-gmamsi.netlify.app/) · [GitHub](https://github.com/Mr-Gms-33) · [LinkedIn](https://www.linkedin.com/in/mounir-gmamsi-1595951b3)
